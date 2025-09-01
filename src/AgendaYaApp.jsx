@@ -1,36 +1,142 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, Bell, User, Plus, Menu, X, Check, ChevronRight, Smartphone, MessageSquare, Home, List, Settings, LogOut } from 'lucide-react';
+import CalendarWidget from './components/Calendar';
 
 const AgendaYaApp = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentView, setCurrentView] = useState('login');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [appointments, setAppointments] = useState([
     {
       id: 1,
-      title: 'Consulta Médica',
-      date: '2024-01-15',
+      title: 'Consulta Médica - Dr. García',
+      category: 'medica',
+      date: '2024-12-15',
       time: '10:00',
       doctor: 'Dr. García',
+      location: 'Hospital Diagnóstico, San Salvador',
+      reminder: 'whatsapp',
+      notes: 'Llevar exámenes previos',
       status: 'confirmada'
     },
     {
       id: 2,
-      title: 'Revisión Dental',
-      date: '2024-01-18',
+      title: 'Reunión de Trabajo - Proyecto Q3',
+      category: 'laboral',
+      date: '2024-12-18',
       time: '14:30',
-      doctor: 'Dra. Martínez',
+      doctor: 'Equipo de Desarrollo',
+      location: 'Oficina Central, Torre Futura',
+      reminder: 'sms',
+      notes: 'Presentar avances del trimestre',
       status: 'pendiente'
+    },
+    {
+      id: 3,
+      title: 'Cena con Amigos',
+      category: 'personal',
+      date: '2024-12-20',
+      time: '19:00',
+      doctor: 'Grupo de Amigos',
+      location: 'La Pampa Argentina, Zona Rosa',
+      reminder: 'notificacion',
+      notes: 'Cumpleaños de Carlos',
+      status: 'confirmada'
+    },
+    {
+      id: 4,
+      title: 'Clase de Yoga',
+      category: 'personal',
+      date: '2025-12-16',
+      time: '08:00',
+      doctor: 'Instructor María',
+      location: 'Centro de Bienestar, Zona Rosa',
+      reminder: 'whatsapp',
+      notes: 'Llevar mat de yoga',
+      status: 'confirmada'
+    },
+    {
+      id: 5,
+      title: 'Revisión Dental',
+      category: 'medica',
+      date: '2025-12-19',
+      time: '15:00',
+      doctor: 'Dra. Martínez',
+      location: 'Clínica Dental Sonrisa',
+      reminder: 'sms',
+      notes: 'Limpieza dental y revisión general',
+      status: 'pendiente'
+    },
+    {
+      id: 6,
+      title: 'Sesión de Estudio',
+      category: 'educativa',
+      date: '2025-12-17',
+      time: '16:00',
+      doctor: 'Grupo de Estudio',
+      location: 'Biblioteca Nacional',
+      reminder: 'notificacion',
+      notes: 'Repasar temas de React y JavaScript',
+      status: 'confirmada'
+    },
+    {
+      id: 7,
+      title: 'Entrevista de Trabajo',
+      category: 'laboral',
+      date: '2024-12-21',
+      time: '11:00',
+      doctor: 'Recursos Humanos',
+      location: 'Empresa TechCorp, Torre Empresarial',
+      reminder: 'whatsapp',
+      notes: 'Llevar CV actualizado y portafolio',
+      status: 'pendiente'
+    },
+    {
+      id: 8,
+      title: 'Consulta Psicológica',
+      category: 'medica',
+      date: '2025-12-22',
+      time: '17:00',
+      doctor: 'Lic. Ana Rodríguez',
+      location: 'Centro de Salud Mental',
+      reminder: 'sms',
+      notes: 'Sesión de seguimiento',
+      status: 'confirmada'
     }
   ]);
 
   const [formData, setFormData] = useState({
     title: '',
+    category: 'personal',
     date: '',
     time: '',
     doctor: '',
+    location: '',
+    reminder: 'whatsapp',
     notes: ''
   });
+
+  // Sistema de categorías con colores e iconos
+  const categoryColors = {
+    medica: 'bg-red-500',
+    educativa: 'bg-blue-500',
+    laboral: 'bg-purple-500',
+    personal: 'bg-green-500'
+  };
+
+  const categoryIcons = {
+    medica: '🏥',
+    educativa: '📚',
+    laboral: '💼',
+    personal: '🎉'
+  };
+
+  const reminderIcons = {
+    whatsapp: '📱',
+    sms: '💬',
+    notificacion: '🔔'
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -51,12 +157,42 @@ const AgendaYaApp = () => {
       status: 'pendiente'
     };
     setAppointments([...appointments, newAppointment]);
-    setFormData({ title: '', date: '', time: '', doctor: '', notes: '' });
+    setFormData({ 
+      title: '', 
+      category: 'personal', 
+      date: '', 
+      time: '', 
+      doctor: '', 
+      location: '', 
+      reminder: 'whatsapp', 
+      notes: '' 
+    });
     setCurrentView('dashboard');
   };
 
   const deleteAppointment = (id) => {
     setAppointments(appointments.filter(apt => apt.id !== id));
+  };
+
+  const getUpcomingAppointments = () => {
+    const today = new Date();
+    return appointments
+      .filter(apt => new Date(apt.date) >= today)
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+  };
+
+  const getAppointmentsForSelectedDate = () => {
+    if (!selectedDate) return [];
+    return appointments.filter(apt => apt.date === selectedDate);
+  };
+
+  const formatDate = (dateString) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('es-SV', options);
+  };
+
+  const handleDateSelect = (date) => {
+    setSelectedDate(date);
   };
 
   if (!isAuthenticated) {
@@ -236,16 +372,59 @@ const AgendaYaApp = () => {
                 </div>
               </div>
 
+              {/* Calendario Interactivo */}
+              <CalendarWidget 
+                appointments={appointments}
+                onDateSelect={handleDateSelect}
+                selectedDate={selectedDate}
+              />
+
+              {/* Citas del día seleccionado */}
+              {selectedDate && getAppointmentsForSelectedDate().length > 0 && (
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+                  <div className="p-6 border-b border-gray-200">
+                    <h2 className="text-xl font-semibold text-dark">
+                      Citas del {formatDate(selectedDate)}
+                    </h2>
+                  </div>
+                  <div className="p-6">
+                    {getAppointmentsForSelectedDate().map((appointment) => (
+                      <div key={appointment.id} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                        <div className="flex items-center space-x-4">
+                          <div className={`w-10 h-10 ${categoryColors[appointment.category]} rounded-lg flex items-center justify-center text-white text-lg`}>
+                            {categoryIcons[appointment.category]}
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-dark">{appointment.title}</h3>
+                            <p className="text-sm text-gray-600">{appointment.doctor}</p>
+                            <p className="text-sm text-accent">{appointment.time}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            appointment.status === 'confirmada' 
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {appointment.status}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="bg-white rounded-xl shadow-sm border border-gray-200">
                 <div className="p-6 border-b border-gray-200">
                   <h2 className="text-xl font-semibold text-dark">Próximas Citas</h2>
                 </div>
                 <div className="p-6">
-                  {appointments.slice(0, 3).map((appointment) => (
+                  {getUpcomingAppointments().slice(0, 3).map((appointment) => (
                     <div key={appointment.id} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
                       <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 bg-gradient-to-r from-accent to-warning rounded-lg flex items-center justify-center">
-                          <Calendar className="w-5 h-5 text-white" />
+                        <div className={`w-10 h-10 ${categoryColors[appointment.category]} rounded-lg flex items-center justify-center text-white text-lg`}>
+                          {categoryIcons[appointment.category]}
                         </div>
                         <div>
                           <h3 className="font-medium text-dark">{appointment.title}</h3>
@@ -281,13 +460,16 @@ const AgendaYaApp = () => {
                   {appointments.map((appointment) => (
                     <div key={appointment.id} className="flex items-center justify-between py-4 border-b border-gray-100 last:border-b-0">
                       <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-gradient-to-r from-accent to-warning rounded-lg flex items-center justify-center">
-                          <Calendar className="w-6 h-6 text-white" />
+                        <div className={`w-12 h-12 ${categoryColors[appointment.category]} rounded-lg flex items-center justify-center text-white text-xl`}>
+                          {categoryIcons[appointment.category]}
                         </div>
                         <div>
                           <h3 className="font-medium text-dark">{appointment.title}</h3>
                           <p className="text-sm text-gray-600">{appointment.doctor}</p>
                           <p className="text-sm text-accent">{appointment.date} a las {appointment.time}</p>
+                          {appointment.location && (
+                            <p className="text-xs text-gray-500">📍 {appointment.location}</p>
+                          )}
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -330,6 +512,27 @@ const AgendaYaApp = () => {
                     />
                   </div>
                   
+                  <div>
+                    <label className="block text-sm font-medium text-accent mb-2">Categoría</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      {Object.entries(categoryIcons).map(([key, icon]) => (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() => setFormData({...formData, category: key})}
+                          className={`p-3 rounded-lg border-2 transition-all ${
+                            formData.category === key
+                              ? 'border-accent bg-accent/10'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <span className="text-2xl mr-2">{icon}</span>
+                          <span className="capitalize">{key}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-accent mb-2">Fecha</label>
@@ -363,6 +566,38 @@ const AgendaYaApp = () => {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
                       placeholder="Ej: Dr. García"
                     />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-accent mb-2">Ubicación</label>
+                    <input
+                      type="text"
+                      value={formData.location}
+                      onChange={(e) => setFormData({...formData, location: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
+                      placeholder="Ej: Hospital Diagnóstico, San Salvador"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-accent mb-2">Tipo de Recordatorio</label>
+                    <div className="grid grid-cols-3 gap-3">
+                      {Object.entries(reminderIcons).map(([key, icon]) => (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() => setFormData({...formData, reminder: key})}
+                          className={`p-3 rounded-lg border-2 transition-all ${
+                            formData.reminder === key
+                              ? 'border-accent bg-accent/10'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <span className="text-xl mb-1 block">{icon}</span>
+                          <span className="text-sm capitalize">{key}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                   
                   <div>
@@ -459,3 +694,5 @@ const AgendaYaApp = () => {
 };
 
 export default AgendaYaApp;
+
+
