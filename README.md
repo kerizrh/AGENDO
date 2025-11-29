@@ -2,7 +2,7 @@
 
 Una aplicación de demostración para gestión de citas y agenda personal, desarrollada con React y Tailwind CSS.
 
-## 🎨 Paleta de Colores
+## Paleta de Colores
 
 La aplicación utiliza la siguiente paleta de colores personalizada:
 
@@ -13,7 +13,7 @@ La aplicación utiliza la siguiente paleta de colores personalizada:
 - **Danger**: `#B51A28` - Color de peligro
 - **Dark**: `#541825` - Color oscuro
 
-## 🚀 Características
+## Características
 
 - **Autenticación**: Sistema de login demo (cualquier email/contraseña)
 - **Dashboard**: Vista general con estadísticas de citas
@@ -26,7 +26,7 @@ La aplicación utiliza la siguiente paleta de colores personalizada:
 - **Responsive**: Diseño adaptativo para móviles y desktop
 - **Navegación**: Sidebar colapsible con navegación intuitiva
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 - **React 18** - Biblioteca de interfaz de usuario
 - **Vite** - Herramienta de construcción rápida
@@ -34,7 +34,7 @@ La aplicación utiliza la siguiente paleta de colores personalizada:
 - **Lucide React** - Iconos modernos
 - **PostCSS** - Procesador de CSS
 
-## 📦 Instalación
+## Instalación
 
 1. **Clonar el repositorio**:
    ```bash
@@ -57,13 +57,13 @@ La aplicación utiliza la siguiente paleta de colores personalizada:
    http://localhost:3001
    ```
 
-## 🏗️ Scripts Disponibles
+## Scripts Disponibles
 
 - `npm run dev` - Inicia el servidor de desarrollo
 - `npm run build` - Construye la aplicación para producción
 - `npm run start` - Inicia el servidor de desarrollo (alias de dev)
 
-## 📱 Funcionalidades de la Demo
+## Funcionalidades de la Demo
 
 ### Login
 - Interfaz de autenticación con gradientes
@@ -87,10 +87,10 @@ La aplicación utiliza la siguiente paleta de colores personalizada:
 ### Gestión de Citas
 - **Lista completa**: Todas las citas con estado y acciones
 - **Sistema de categorías**: 
-  - 🏥 Médica (rojo)
-  - 📚 Educativa (azul)
-  - 💼 Laboral (púrpura)
-  - 🎉 Personal (verde)
+  - Médica (rojo)
+  - Educativa (azul)
+  - Laboral (púrpura)
+  - Personal (verde)
 - **Estados visuales**: Confirmadas (verde) y pendientes (amarillo)
 - **Acciones**: Eliminar citas con confirmación visual
 
@@ -106,7 +106,7 @@ La aplicación utiliza la siguiente paleta de colores personalizada:
 - **Iconos descriptivos**: Cada opción tiene su icono representativo
 - **Estados visuales**: Toggles activos/inactivos
 
-## 🎯 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 src/
@@ -118,7 +118,7 @@ src/
 └── index.css           # Estilos globales y configuración de Tailwind
 ```
 
-## 🎨 Personalización
+## Personalización
 
 ### Colores
 Los colores se pueden modificar en:
@@ -136,10 +136,10 @@ const categoryColors = {
 };
 
 const categoryIcons = {
-  medica: '🏥',
-  educativa: '📚',
-  laboral: '💼',
-  personal: '🎉'
+  medica: '',
+  educativa: '',
+  laboral: '',
+  personal: ''
 };
 ```
 
@@ -159,11 +159,11 @@ Cada vista está modularizada y se puede personalizar independientemente:
 - Formularios
 - Configuración
 
-## 📄 Licencia
+## Licencia
 
 Este es un proyecto de demostración. Puede ser utilizado libremente para fines educativos y de desarrollo.
 
-## 🤝 Contribuciones
+## Contribuciones
 
 Las contribuciones son bienvenidas. Por favor, abre un issue o pull request para sugerir mejoras.
 
